@@ -20,7 +20,7 @@ class Droppy_Airplane:
 
         # sprites setup
         DA(self.all_stripes,self.scale_factor)
-
+        
     def run(self):
         last_time = time.time()
         while True:
@@ -36,9 +36,9 @@ class Droppy_Airplane:
                     sys.exit()
             
             # game logic
-            self.display_surface.fill('black')
+            self.screen.fill('black')
             self.all_stripes.update(dt)
-            self.all_stripes.draw(self.display_surface)
+            self.all_stripes.draw(self.screen)
 
             pygame.display.update()
             self.clock.tick(FRAMES_PER_SECOND)
