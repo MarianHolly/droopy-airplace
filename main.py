@@ -1,6 +1,6 @@
 import pygame, sys, time 
 from settings import *
-from sprites import DA
+from sprites import DA, Ground
 
 class Droppy_Airplane:
     def __init__(self):
@@ -20,6 +20,7 @@ class Droppy_Airplane:
 
         # sprites setup
         DA(self.all_stripes,self.scale_factor)
+        Ground(self.all_stripes,self.scale_factor)
         
     def run(self):
         last_time = time.time()
