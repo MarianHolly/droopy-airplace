@@ -1,12 +1,12 @@
 import pygame, sys, time 
 from settings import *
-from sprites import DA, Ground
+from sprites import DA, Ground, Plane
 
 class Droppy_Airplane:
     def __init__(self):
         # setup
         pygame.init() # initialize pygame
-        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEAIGHT)) # set the screen size
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) # set the screen size
         pygame.display.set_caption('Droppy Airplane') # set the window title
         self.clock = pygame.time.Clock() # create a clock object
 
@@ -16,11 +16,12 @@ class Droppy_Airplane:
 
         # scale factor
         bg_height = pygame.image.load('graphics/environment/background.png').get_height()
-        self.scale_factor = WINDOW_HEAIGHT / bg_height
+        self.scale_factor = WINDOW_HEIGHT / bg_height
 
         # sprites setup
         DA(self.all_stripes,self.scale_factor)
         Ground(self.all_stripes,self.scale_factor)
+        self.plane = Plane(self.all_stripes,self.scale_factor / 1.85)
         
     def run(self):
         last_time = time.time()
@@ -35,6 +36,8 @@ class Droppy_Airplane:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.plane.jump()
             
             # game logic
             self.screen.fill('black')

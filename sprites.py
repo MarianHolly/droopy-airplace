@@ -30,7 +30,7 @@ class Ground(pygame.sprite.Sprite):
         ground_surface = pygame.image.load('graphics/environment/ground.png').convert_alpha()
         self.image = pygame.transform.scale(ground_surface,pygame.math.Vector2(ground_surface.get_size())* scale_factor)
         # position
-        self.rect = self.image.get_rect(bottomleft=(0, WINDOW_HEAIGHT))
+        self.rect = self.image.get_rect(bottomleft=(0, WINDOW_HEIGHT))
         self.pos = pygame.math.Vector2(self.rect.bottomleft)
     
     def update(self,dt):
@@ -39,4 +39,54 @@ class Ground(pygame.sprite.Sprite):
             self.pos.x = 0
         self.rect.x = round(self.pos.x)
 
+class Plane(pygame.sprite.Sprite):
+    def __init__(self, groups, scale_factor):
+        super().__init__(groups)
 
+        # Image
+        self.import_frames(scale_factor)
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+
+        # Rect
+        self.rect = self.image.get_rect(midleft=(WINDOW_WIDTH/20, WINDOW_HEIGHT/2))
+        self.pos = pygame.math.Vector2(self.rect.topleft)
+
+        # Gravity
+        self.gravity = 330
+        self.direction = 0
+    
+    def import_frames(self,scale_factor):
+        self.frames = []
+        for i in range(3):
+            surf = pygame.image.load(f'graphics/plane/red{i}.png').convert_alpha()
+            scaled_surf = pygame.transform.scale(surf,pygame.math.Vector2(surf.get_size()) * scale_factor)
+            self.frames.append(scaled_surf)
+
+    def apply_gravity(self,dt):
+        self.direction += self.gravity * dt
+        self.pos.y += self.direction * dt
+        self.rect.y = round(self.pos.y)
+
+    def jump(self):
+        self.direction = -400
+
+    def animate(self,dt):
+        self.frame_index += 14 * dt
+        if self.frame_index >= len(self.frames):
+            self.frame_index = 0
+        self.image = self.frames[int(self.frame_index)]
+
+    def rotate(self):
+        rotated_plane = pygame.transform.rotate(self.image,-self.direction * 0.05)
+        self.image = rotated_plane
+
+    def update(self,dt):
+        self.apply_gravity(dt)
+        self.animate(dt)
+        self.rotate()
+
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, groups, scale_factor):
+        super().__init__(groups)
+    
