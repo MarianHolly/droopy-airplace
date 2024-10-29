@@ -101,23 +101,24 @@ class Plane(pygame.sprite.Sprite):
         self.rotate()
 
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, groups, scale_factor):
+    def __init__(self,groups,scale_factor):
         super().__init__(groups)
         self.sprite_type = 'obstacle'
-
-        orientation = choice(('up', 'down'))
-        surf = pygame.image.load(f'graphics/obstacles/{choice((0,1))}.png').convert_alpha()
+        orientation = choice(('up','down'))
+        surf = pygame.image.load(f'./graphics/obstacles/{choice((0,1))}.png').convert_alpha()
         self.image = pygame.transform.scale(surf,pygame.math.Vector2(surf.get_size()) * scale_factor)
-
         x = WINDOW_WIDTH + randint(40,100)
-
-        if orientation == 'up': 
-            self.rect = self.image.get_rect(midbottom=(x, WINDOW_HEIGHT + randint(10,50)))
-        else: 
-            self.image = pygame.transform.flip(self.image, False, True)
-            self.rect = self.image.get_rect(midtop=(x, randint(-50,-10)))
-
+        if orientation == 'up':
+            y = WINDOW_HEIGHT + randint(10,50)
+            self.rect = self.image.get_rect(midbottom = (x,y))
+        else:
+            y = randint(-50,-10)
+            self.image = pygame.transform.flip(self.image,False,True)
+            self.rect = self.image.get_rect(midtop = (x,y))
+        
         self.pos = pygame.math.Vector2(self.rect.topleft)
+
+		# mask
         self.mask = pygame.mask.from_surface(self.image)
 
     def update(self,dt):

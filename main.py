@@ -84,7 +84,7 @@ class Droppy_Airplane:
                         self.start_offset = pygame.time.get_ticks()
                     
                 if event.type == self.obstacle_timer and self.active:
-                    Obstacle([self.all_sprites,self.collision_sprites],self.scale_factor * 1.1)
+                    Obstacle([self.all_stripes,self.collision_sprites],self.scale_factor * 1.1)
             
             # game logic
             self.screen.fill('black')
